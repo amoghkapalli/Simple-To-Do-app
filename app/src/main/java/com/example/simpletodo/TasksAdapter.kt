@@ -1,10 +1,15 @@
 package com.example.simpletodo
 
+import android.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.annotation.NonNull
+
+
+
 
 /**
  * Creates the adapter for the recyclerview to recieve all of the specific tasks from the user
@@ -15,6 +20,12 @@ class TasksAdapter(val tasksList: List<String>, val clicker: OnLongClickListener
     interface OnLongClickListener{
         fun onLongItemClicked(position: Int)
     }
+    /*
+    interface OnShortClickListener {
+        fun onItemShortClicked(position: Int)
+    }
+
+     */
     //generates the view for every specific item in the recyclerview
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
@@ -52,13 +63,14 @@ class TasksAdapter(val tasksList: List<String>, val clicker: OnLongClickListener
     // Used to cache the views within the item layout for fast access
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //Stores references to the layout view
-        val textView: TextView
+        var textView: TextView
         init{
             textView=itemView.findViewById(android.R.id.text1)
             itemView.setOnLongClickListener{
                 clicker.onLongItemClicked(adapterPosition)
                 true
             }
+
         }
     }
 }

@@ -1,9 +1,15 @@
 package com.example.simpletodo
 
+import android.app.Activity
+import android.app.Instrumentation
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.apache.commons.io.FileUtils
@@ -11,9 +17,12 @@ import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 
+
 class MainActivity : AppCompatActivity() {
     var listOfTasks= mutableListOf<String>()
     lateinit var adapter: TasksAdapter
+    var pos = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,7 +36,17 @@ class MainActivity : AppCompatActivity() {
         }
         //listOfTasks.add("Do homework")
         //listOfTasks.add("Do the dishes")
-
+        /*
+        val onShortClickListener = object : TasksAdapter.OnShortClickListener {
+            override fun onItemShortClicked(position: Int) {
+                // 1. Bring up an edit screen for item
+                val intent = Intent(this@MainActivity , EditItem::class.java)
+                pos = position
+                intent.putExtra("clickedText" , listOfTasks.get(position))
+                //activity.launch(intent)
+            }
+        }
+         */
         loadItems()
         //reference to the recyclerview in the layout
         val rvItem = findViewById<RecyclerView>(R.id.recyclerView) as RecyclerView
@@ -73,12 +92,9 @@ class MainActivity : AppCompatActivity() {
         try{
             FileUtils.writeLines(getItemsFile(), listOfTasks)
         }
-        catch(ioException: IOException){
+        catch(ioException: IOException) {
             ioException.printStackTrace()
         }
-
-
-
     }
 
 }
